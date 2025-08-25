@@ -23,7 +23,7 @@ The Stark SwiftLint Tool scans your iOS project for accessibility issues and hel
 
 ### Step 1: Download the Tool
 
-1. [Download the `stark-swiftlint-tool.tar.gz` file](https://TODO)
+1. [Download the `stark-swiftlint-tool.tar.gz` file](https://github.com/stark-contrast/stark-swiftlint-tool/releases/download/0.0.1/stark-swiftlint-tool.tar.gz)
 2. Extract it to a convenient location on your Mac:
    ```bash
    tar -xzf stark-swiftlint-tool.tar.gz
