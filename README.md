@@ -109,6 +109,100 @@ After running the scan:
 3. **Review specific violations** with file names and line numbers
 4. **Track progress** over time as you fix accessibility issues
 
+## Accessibility Rules
+
+The tool includes 33 specialized accessibility rules to help ensure your iOS app meets accessibility standards:
+
+| Rule Identifier | Description |
+|-----------------|-------------|
+| `stark_accordion_accessibility` | Accordion components must have proper accessibility labels and state indicators |
+| `stark_active_image_accessibility` | Images with interactive modifiers or within interactive containers must have accessibility labels communicating their function |
+| `stark_alert_accessibility` | Alert components must have accessible titles and optional descriptions |
+| `stark_checkbox_accessibility` | Checkbox controls must have accessible labels describing their purpose |
+| `stark_checkbox_group_accessibility` | Checkbox groups must have accessible group labels and individual checkbox labels |
+| `stark_color_information_accessibility` | Information conveyed through color must also be available through other means |
+| `stark_control_boundary_contrast` | Interactive controls must have sufficient contrast with their background |
+| `stark_data_table_accessibility` | Data tables must have proper headers and accessible structure |
+| `stark_enhanced_text_contrast` | Text must meet enhanced contrast requirements for better readability |
+| `stark_heading_accessibility` | Headings must be properly structured and accessible |
+| `stark_image_button_role` | Image buttons must have appropriate accessibility roles |
+| `stark_label_association` | Form controls must be properly associated with their labels |
+| `stark_label_visibility` | Labels must be visible and not hidden from assistive technologies |
+| `stark_link_color_contrast` | Links must have sufficient color contrast with surrounding text |
+| `stark_link_role` | Links must have appropriate accessibility roles and context |
+| `stark_menu_accessibility` | Menu components must have proper navigation and accessibility support |
+| `stark_page_language` | Pages must declare their primary language for assistive technologies |
+| `stark_picker_view_accessibility` | Picker views must have accessible labels and selection indicators |
+| `stark_progress_bar_accessibility` | Progress bars must have accessible labels indicating current progress |
+| `stark_progress_spinner_accessibility` | Progress spinners must have accessible labels for loading states |
+| `stark_radio_button_accessibility` | Radio button controls must have accessible labels and state indicators |
+| `stark_radio_group_accessibility` | Radio button groups must have accessible group labels and selection states |
+| `stark_rating_control_accessibility` | Rating controls must have accessible labels and current rating information |
+| `stark_screen_title_accessibility` | Screen titles must be accessible and properly structured |
+| `stark_slider_accessibility` | Slider controls must have accessible labels and value indicators |
+| `stark_switch_accessibility` | Switch controls must have accessible labels describing their function |
+| `stark_tab_accessibility` | Tab components must have proper accessibility navigation and labels |
+| `stark_text_contrast` | Text must have sufficient contrast with its background |
+| `stark_text_field_accessibility` | Text fields must have accessible labels and input requirements |
+| `stark_toggle_button_accessibility` | Toggle buttons must have accessible labels and state indicators |
+| `stark_touch_target_size` | Interactive elements must meet minimum touch target size requirements |
+| `stark_video_audio_descriptions` | Videos must provide audio descriptions for visual content |
+| `stark_video_captions` | Videos must provide captions for audio content |
+
+### Configuring Rules
+
+Due to the limitations of static code analysis, there may be some false positives, so you might want to ignore one or more rules that don't apply to your specific use case.
+
+To disable specific rules, create a `.swiftlint.yml` file in your project root with the following structure:
+
+```yaml
+disabled_rules:
+  - stark_video_captions
+  - stark_video_audio_descriptions
+  - stark_enhanced_text_contrast
+
+# You can also configure other SwiftLint settings
+line_length: 120
+```
+
+**Example use cases for disabling rules:**
+- Disable `stark_video_captions` if your app doesn't include video content
+- Disable `stark_enhanced_text_contrast` if you're following standard contrast guidelines instead of enhanced ones
+- Disable specific control rules if you're using custom UI components that handle accessibility differently
+
+## Running Checks in your CI/CD
+
+You can integrate the Stark accessibility scan into your CI/CD pipeline to automatically check for accessibility issues on every push or pull request. Here's an example using GitHub Actions:
+
+Create a `.github/workflows/stark-accessibility.yml` file in your repository:
+
+```yaml
+name: Stark Accessibility Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-command:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Stark accessibility scan
+        run: |
+          echo "Running Stark accessibility scan..."
+          ./stark-swiftlint-scan --stark-token YOUR_STARK_TOKEN
+```
+
+**Important:** Make sure to:
+1. Replace `YOUR_STARK_TOKEN` with your actual Stark token
+2. Consider storing your token as a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and referencing it as `${{ secrets.STARK_TOKEN }}`
+3. Include the `stark-swiftlint-scan` executable in your repository or download it as part of the workflow
+
 ## Troubleshooting
 
 ### "Command not found" or Permission Errors
