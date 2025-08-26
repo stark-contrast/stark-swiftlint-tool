@@ -85,39 +85,6 @@ This automatically runs accessibility checks every time you build your project.
 /Users/john/Tools/stark-swiftlint-scan --stark-token stark_1452216e48434f07bd0cf4f6f6502e56 --name "MyApp Accessibility" --path "${SRCROOT}"
 ```
 
-## Running Checks in your CI/CD
-
-You can integrate the Stark accessibility scan into your CI/CD pipeline to automatically check for accessibility issues on every push or pull request. Here's an example using GitHub Actions:
-
-Create a `.github/workflows/stark-accessibility.yml` file in your repository:
-
-```yaml
-name: Stark Accessibility Scan
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  run-command:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run Stark accessibility scan
-        run: |
-          echo "Running Stark accessibility scan..."
-          ./stark-swiftlint-scan --stark-token YOUR_STARK_TOKEN
-```
-
-**Important:** Make sure to:
-1. Replace `YOUR_STARK_TOKEN` with your actual Stark token
-2. Consider storing your token as a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and referencing it as `${{ secrets.STARK_TOKEN }}`
-3. Include the `stark-swiftlint-scan` executable in your repository or download it as part of the workflow
-
 ## Command Options
 
 | Option | Description | Required |
@@ -132,6 +99,15 @@ jobs:
 2. **Applies accessibility rules:** Checks against 30+ accessibility best practices
 3. **Reports to Stark:** Automatically uploads results to your Stark project dashboard
 4. **Shows summary:** Displays a summary in your terminal
+
+## Viewing Results
+
+After running the scan:
+
+1. **Check your terminal** for a summary of issues found
+2. **Visit your Stark dashboard** at [app.getstark.co](https://app.getstark.co) to see detailed results
+3. **Review specific violations** with file names and line numbers
+4. **Track progress** over time as you fix accessibility issues
 
 ## Accessibility Rules
 
@@ -194,14 +170,38 @@ line_length: 120
 - Disable `stark_enhanced_text_contrast` if you're following standard contrast guidelines instead of enhanced ones
 - Disable specific control rules if you're using custom UI components that handle accessibility differently
 
-## Viewing Results
+## Running Checks in your CI/CD
 
-After running the scan:
+You can integrate the Stark accessibility scan into your CI/CD pipeline to automatically check for accessibility issues on every push or pull request. Here's an example using GitHub Actions:
 
-1. **Check your terminal** for a summary of issues found
-2. **Visit your Stark dashboard** at [app.getstark.co](https://app.getstark.co) to see detailed results
-3. **Review specific violations** with file names and line numbers
-4. **Track progress** over time as you fix accessibility issues
+Create a `.github/workflows/stark-accessibility.yml` file in your repository:
+
+```yaml
+name: Stark Accessibility Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-command:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Stark accessibility scan
+        run: |
+          echo "Running Stark accessibility scan..."
+          ./stark-swiftlint-scan --stark-token YOUR_STARK_TOKEN
+```
+
+**Important:** Make sure to:
+1. Replace `YOUR_STARK_TOKEN` with your actual Stark token
+2. Consider storing your token as a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and referencing it as `${{ secrets.STARK_TOKEN }}`
+3. Include the `stark-swiftlint-scan` executable in your repository or download it as part of the workflow
 
 ## Troubleshooting
 
